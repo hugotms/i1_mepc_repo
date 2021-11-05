@@ -1,0 +1,18 @@
+---
+
+play_packages:
+  - name: golang-myip
+    state: latest
+    enabled: yes
+  - name: git
+
+play_users:
+  - name: htomasi
+    group: student
+    ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH69bImSyoVQrjfqYS5KxwXWN+8ENLXt1vihAw7tDhdH hugotomasi@Hugos-MacBook-Air.local"
+    sudo_conf: "ALL = (ALL) PASSWD:ALL"
+  - name: bbalaud
+    group: not_student
+    ssh_key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAmM7WeoXFKZGnDLV8RA3jfeYKPIYzTNIe3Yqr7Z11BV hurrycane@rocinante_ed%"
+    sudo_conf: "ALL = (ALL) NOPASSWD:ALL"
+  - name: jmichu

@@ -1,0 +1,28 @@
+---
+
+- name: disable ipv6
+  lineinfile:
+    path: "{{ ipv6_conf_path }}"
+    line: "net.ipv6.conf.all.disable_ipv6=1"
+    owner: root
+    group: root
+    mode: '0640'
+    create: yes
+  become: True
+  tags: network
+
+- name: disable ssh root login
+  lineinfile:
+    path: "{{ sshd_config_path }}"
+    regexp: "^PermitRootLogin yes"
+    line: "PermitRootLogin no"
+  become: True
+  tags: network
+
+- name: disable ssh password login
+  lineinfile:
+    path: "{{ sshd_config_path }}"
+    regexp: "^PasswordAuthentication yes"
+    line: "PasswordAuthentication no"
+  become: True
+  tags: network

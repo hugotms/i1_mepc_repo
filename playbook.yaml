@@ -1,8 +1,10 @@
 ---
 - hosts: all
-  become: yes
-  tasks:
-    - name: Install package GIT
-      package:
-        name: git
-        state: latest 
+  vars:
+    - list_packages: "{{ play_packages }}"
+    - list_users: "{{ play_users }}"
+  
+  roles:
+    - network
+    - install_packages
+    - users

@@ -1,0 +1,5 @@
+---
+
+ipv6_conf_path: /etc/sysctl.d/ipv6_disabled.conf
+
+sshd_config_path: /etc/ssh/sshd_config

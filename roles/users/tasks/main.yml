@@ -1,0 +1,76 @@
+---
+
+- name: create groups
+  group:
+    name: "{{ item.group | default("no_group_right") }}"
+    state: present
+  loop: "{{ list_users }}"
+  loop_control:
+    label: "{{ item.group | default("no_group_right") }}"
+  when: list_users
+  become: True
+  tags: user
+
+- name: create users
+  user:
+    name: "{{ item.name }}"
+    group: "{{ item.group | default("no_group_right") }}"
+    home: "/home/{{ item.name }}/"
+    shell: "{{ shell_path }}"
+  loop: "{{ list_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: list_users
+  become: True
+  tags: user
+
+- name: create .ssh directory
+  file:
+    path: "/home/{{ item.name }}/.ssh/"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.group | default("no_group_right") }}"
+    mode: "0600"
+  loop: "{{ list_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - list_users
+    - item.ssh_key
+  become: True
+  tags: user
+
+- name: adding ssh keys
+  lineinfile:
+    path: "/home/{{ item.name }}/.ssh/authorized_keys"
+    line: "{{ item.key }}"
+    owner: "{{ item.name }}"
+    group: "{{ item.group | default("no_group_right") }}"
+    mode: "0600"
+    create: yes
+  loop: "{{ list_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - list_users
+    - item.ssh_key
+  become: True
+  tags: user
+
+- name: adding sudo configuration
+  lineinfile:
+    path: "/etc/sudoers.d/{{ item.name }}"
+    line: "{{ item.name }} {{ item.sudo_conf }}"
+    owner: root
+    group: root
+    mode: "0644"
+    create: yes
+  loop: "{{ list_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when:
+    - list_users
+    - item.sudo_conf
+  become: True
+  tags: user
+  
