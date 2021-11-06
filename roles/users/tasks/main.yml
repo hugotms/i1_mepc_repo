@@ -2,11 +2,11 @@
 
 - name: create groups
   group:
-    name: "{{ item.group | default("no_group_right") }}"
+    name: "{{ item.group | default('no_group_right') }}"
     state: present
   loop: "{{ list_users }}"
   loop_control:
-    label: "{{ item.group | default("no_group_right") }}"
+    label: "{{ item.group | default('no_group_right') }}"
   when: list_users
   become: True
   tags: user
@@ -14,7 +14,7 @@
 - name: create users
   user:
     name: "{{ item.name }}"
-    group: "{{ item.group | default("no_group_right") }}"
+    group: "{{ item.group | default('no_group_right') }}"
     home: "/home/{{ item.name }}/"
     shell: "{{ shell_path }}"
   loop: "{{ list_users }}"
@@ -29,23 +29,23 @@
     path: "/home/{{ item.name }}/.ssh/"
     state: directory
     owner: "{{ item.name }}"
-    group: "{{ item.group | default("no_group_right") }}"
+    group: "{{ item.group | default('no_group_right') }}"
     mode: "0600"
   loop: "{{ list_users }}"
   loop_control:
     label: "{{ item.name }}"
   when:
     - list_users
-    - item.ssh_key
+    - item.ssh_key is defined
   become: True
   tags: user
 
 - name: adding ssh keys
   lineinfile:
     path: "/home/{{ item.name }}/.ssh/authorized_keys"
-    line: "{{ item.key }}"
+    line: "{{ item.ssh_key }}"
     owner: "{{ item.name }}"
-    group: "{{ item.group | default("no_group_right") }}"
+    group: "{{ item.group | default('no_group_right') }}"
     mode: "0600"
     create: yes
   loop: "{{ list_users }}"
@@ -53,7 +53,7 @@
     label: "{{ item.name }}"
   when:
     - list_users
-    - item.ssh_key
+    - item.ssh_key is defined
   become: True
   tags: user
 
@@ -65,12 +65,13 @@
     group: root
     mode: "0644"
     create: yes
+    validate: /usr/sbin/visudo -cf %s
   loop: "{{ list_users }}"
   loop_control:
     label: "{{ item.name }}"
   when:
     - list_users
-    - item.sudo_conf
+    - item.sudo_conf is defined
   become: True
   tags: user
   

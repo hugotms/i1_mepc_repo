@@ -1,10 +1,16 @@
 ---
 
-play_packages:
-  - name: golang-myip
-    state: latest
-    enabled: yes
-  - name: git
+play_services:
+  dnf:
+    - name: git
+      state: latest
+  git:
+    - url: https://github.com/BastienBalaud/golang-myip.git
+      path: /usr/bin/golang-myip
+  service:
+    - name: firewalld
+      enabled: yes
+      state: started
 
 play_users:
   - name: htomasi

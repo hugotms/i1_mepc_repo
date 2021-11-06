@@ -1,25 +1,26 @@
 ---
 
-- name: install package
+- name: install package with dnf
   dnf:
     name: "{{ item.name }}"
     state: "{{ item.state | default('latest') }}"
-  loop: "{{ list_package }}"
+  loop: "{{ list_services.dnf }}"
   loop_control:
     label: "{{ item.name }}"
-  when: list_package
+  when: list_services.dnf
   become: True
   tags: package
 
 - name: enable service
   systemd:
     name: "{{ item.name }}"
-    enable: "{{ item.enabled | default(False) }}"
-  loop: "{{ list_package }}"
+    enabled: "{{ item.enabled | default(False) }}"
+    state: "{{ item.state | default('stopped') }}"
+  loop: "{{ list_services.service }}"
   loop_control:
     label: "{{ item.name }}"
   when:
-    - list_package
+    - list_services.service
     - item.enabled
   become: True
   tags: package

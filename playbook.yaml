@@ -1,10 +1,10 @@
 ---
 - hosts: all
   vars:
-    - list_packages: "{{ play_packages }}"
+    - list_services: "{{ play_services }}"
     - list_users: "{{ play_users }}"
   
   roles:
     - network
-    - install_packages
+    - services
     - users
