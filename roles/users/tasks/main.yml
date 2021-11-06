@@ -24,6 +24,20 @@
   become: True
   tags: user
 
+- name: create .no_passwd file
+  file:
+    path: "/home/{{ item.name }}/.no_passwd"
+    state: touch
+    owner: "{{ item.name }}"
+    group: "{{ item.group | default('no_group_right') }}"
+    mode: "0600"
+  loop: "{{ list_users }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: list_users
+  become: True
+  tags: user
+
 - name: create .ssh directory
   file:
     path: "/home/{{ item.name }}/.ssh/"
@@ -72,6 +86,17 @@
   when:
     - list_users
     - item.sudo_conf is defined
+  become: True
+  tags: user
+
+- name: add script that displays message
+  template:
+    src: first_login_script.j2
+    dest: "{{ script_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+  when: list_users
   become: True
   tags: user
   

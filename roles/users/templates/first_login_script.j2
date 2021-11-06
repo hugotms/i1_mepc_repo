@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ "$-" != "${-#*i}" ]; then
+    if [ -f "$HOME/.no_passwd" ]; then
+        echo "Welcome, this is your first login !"
+        echo "Please set you a password so that you are allowed to use the full potential of your account"
+        rm "$HOME/.no_passwd"
+    fi
+fi

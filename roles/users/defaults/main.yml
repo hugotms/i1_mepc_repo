@@ -1,3 +1,5 @@
 ---
 
 shell_path: /bin/bash
+
+script_path: /etc/profile.d/first_login_script.sh
