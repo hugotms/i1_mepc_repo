@@ -1,7 +1,7 @@
 ---
 
 - name: install package with dnf
-  dnf:
+  yum:
     name: "{{ item.name }}"
     state: "{{ item.state | default('latest') }}"
   loop: "{{ list_services.dnf }}"
