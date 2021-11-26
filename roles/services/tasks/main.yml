@@ -1,13 +1,62 @@
 ---
 
-- name: install package with dnf
+- name: install package with yum
   yum:
     name: "{{ item.name }}"
     state: "{{ item.state | default('latest') }}"
-  loop: "{{ list_services.dnf }}"
+  loop: "{{ list_services.yum }}"
   loop_control:
     label: "{{ item.name }}"
-  when: list_services.dnf
+  when: list_services.yum
+  become: True
+  tags: package
+
+- name: clone git repository of package
+  git:
+    repo: "{{ item.url }}"
+    clone: yes
+    dest: "/tmp/{{ item.name }}"
+  loop: "{{ list_services.make_from_git }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: list_services.make_from_git
+  become: True
+  tags: package
+
+- name: make binaries
+  shell: "make -C /tmp/{{ item.name }} -f /tmp/{{ item.name }}/Makefile"
+  args:
+    executable: /bin/bash
+  loop: "{{ list_services.make_from_git }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: list_services.make_from_git
+  become: True
+  tags: package
+
+- name: copy binaries to /usr/bin
+  copy:
+    remote_src: yes
+    src: "/tmp/{{ item.name }}/{{ item.binary_path }}"
+    dest: /usr/bin/item.name
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ list_services.make_from_git }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: list_services.make_from_git
+  become: True
+  tags: package
+
+- name: create service
+  template:
+    src: "{{ item.serviceTemplate }}"
+    dest: "/etc/systemd/system/{{ item.name }}.service"
+  loop: "{{ list_services.make_from_git }}"
+  loop_control:
+    label: "{{ item.name }}"
+  when: list_services.make_from_git
   become: True
   tags: package
 

@@ -1,0 +1,14 @@
+[Unit]
+Description=Golang-myip Service
+Wants=network.target network-online.target
+After=network.target network-online.target
+Documentation=https://raw.githubusercontent.com/BastienBalaud/golang-myip/master/README.md
+
+[Service]
+ExecStart=/usr/bin/golang-myip
+UMask=0066
+StandardOutput=null
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

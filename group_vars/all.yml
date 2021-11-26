@@ -1,14 +1,23 @@
 ---
 
 play_services:
-  dnf:
+  yum:
     - name: git
       state: latest
-  git:
+    - name: make
+      state: latest
+    - name: go-toolset
+      state: latest
+  make_from_git:
     - url: https://github.com/BastienBalaud/golang-myip.git
-      path: /usr/bin/golang-myip
+      name: golang-myip
+      binary_path: build/server.x86_64
+      serviceTemplate: golang-myip.j2
   service:
     - name: firewalld
+      enabled: yes
+      state: started
+    - name: golang-myip
       enabled: yes
       state: started
 
