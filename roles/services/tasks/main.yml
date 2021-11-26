@@ -7,7 +7,7 @@
   loop: "{{ list_services.yum }}"
   loop_control:
     label: "{{ item.name }}"
-  when: list_services.yum
+  when: list_services.yum is defined
   become: True
   tags: package
 
@@ -19,7 +19,7 @@
   loop: "{{ list_services.make_from_git }}"
   loop_control:
     label: "{{ item.name }}"
-  when: list_services.make_from_git
+  when: list_services.make_from_git is defined
   become: True
   tags: package
 
@@ -30,7 +30,7 @@
   loop: "{{ list_services.make_from_git }}"
   loop_control:
     label: "{{ item.name }}"
-  when: list_services.make_from_git
+  when: list_services.make_from_git is defined
   become: True
   tags: package
 
@@ -45,7 +45,7 @@
   loop: "{{ list_services.make_from_git }}"
   loop_control:
     label: "{{ item.name }}"
-  when: list_services.make_from_git
+  when: list_services.make_from_git is defined
   become: True
   tags: package
 
@@ -56,7 +56,9 @@
   loop: "{{ list_services.make_from_git }}"
   loop_control:
     label: "{{ item.name }}"
-  when: list_services.make_from_git
+  when:
+    - list_services.make_from_git is defined
+    - item.serviceTemplate is defined
   become: True
   tags: package
 
@@ -69,7 +71,7 @@
   loop_control:
     label: "{{ item.name }}"
   when:
-    - list_services.service
+    - list_services.service is defined
     - item.enabled
   become: True
   tags: package
