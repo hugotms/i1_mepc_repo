@@ -1,3 +1,11 @@
+# Rendu packer Hugo TOMASI - I1 ASR
+
+ - Toutes les variables utilisées par ansible sont situées dans le fichier `group_vars/all.yml`.
+ - Le playbook a été redéfinit pour utiliser la notion de rôles ansible (permettant de réutiliser facilement des configurations). Ces derniers sont disponibles dans le répertoire `roles/`du projet. 
+ - 3 rôles ont été créés afin de gérer la configuration réseau de la VM, l'installation de services (avec plusieurs méthodes) et leur démarrage si nécessaires, ainsi que la création des users (et de leurs groupes), l'attribution de leurs droits sudo et l'établissement de leurs clés ssh.
+ - Certains rôles utilisent un fichier `defaults/main.yml`, celui-ci a pour but de garantir une configuration minimale dans le cas où l'utilisateur ne surchargerait pas cette variable par ses propres configurations (il n'était pas nécessaire dans le cadre de ce TP d'y recourir mais l'exemple semblait être pertinent).
+ - Il s'agit d'un très petit éventail d'actions possibles pour sécuriser une machine virtuelle de type RedHat 8 / Centos (Stream) 8 / Rocky Linux 8. La liste des nombreuses actions à mener est disponible ici : https://paper.bobylive.com/Security/CIS/CIS_Red_Hat_Enterprise_Linux_8_Benchmark_v1_0_0.pdf
+
 # packer-course-bootstrap
 
 ## Kickstart 
