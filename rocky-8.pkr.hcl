@@ -1,12 +1,12 @@
 source "qemu" "example" {
-  iso_url           = "/root/Rocky-8.4-x86_64-minimal.iso"
+  iso_url           = "./Rocky-8.4-x86_64-minimal.iso"
   iso_checksum      = "sha256:0de5f12eba93e00fefc06cdb0aa4389a0972a4212977362ea18bde46a1a1aa4f"
   output_directory  = "build-rocky-8"
   shutdown_command  = "echo 'packer' | sudo -S shutdown -P now"
   disk_size         = "5000M"
   format            = "qcow2"
   accelerator       = "kvm"
-  http_directory    = "/git/i1_mepc_repo/ks"
+  http_directory    = "./ks"
   ssh_username      = "root"
   ssh_password      = "%Serveur44"
   ssh_timeout       = "20m"
@@ -26,7 +26,7 @@ build {
   sources = ["source.qemu.example"]
 
   provisioner "ansible" {      
-    playbook_file = "/git/i1_mepc_repo/playbook.yaml"
+    playbook_file = "./playbook.yaml"
     user = "root"
     }
 }
