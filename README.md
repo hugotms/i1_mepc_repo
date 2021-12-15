@@ -5,8 +5,17 @@
 Pour installer les dépendances liées à la virtualisation sur la machine, il est nécessaire d'exécuter les commandes suivantes :
 
 ```bash
-dnf install '@Virtualization Host'
+dnf module install virt
+dnf -y install virt-install virt-viewer libguestfs-tools
 systemctl enable --now libvirtd
+```
+
+Afin de pouvoir exécuter le playbook (et les rôles) Ansible, les commandes suivantes ont été exécutées :
+
+```bash
+dnf -y install python3 python3-pip
+pip3 install --upgrade pip
+pip3 install ansible
 ```
 
 ## Ansible
