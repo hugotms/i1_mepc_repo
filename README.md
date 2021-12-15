@@ -1,5 +1,16 @@
 # Rendu packer Hugo TOMASI - I1 ASR
 
+## Dépendances
+
+Pour installer les dépendances liées à la virtualisation sur la machine, il est nécessaire d'exécuter les commandes suivantes :
+
+```bash
+dnf install '@Virtualization Host'
+systemctl enable --now libvirtd
+```
+
+## Ansible
+
  - Toutes les variables utilisées par ansible sont situées dans le fichier `group_vars/all.yml`.
  - Le playbook a été redéfinit pour utiliser la notion de rôles ansible (permettant de réutiliser facilement des configurations). Ces derniers sont disponibles dans le répertoire `roles/`du projet. 
  - 3 rôles ont été créés afin de gérer la configuration réseau de la VM, l'installation de services (avec plusieurs méthodes) et leur démarrage si nécessaires, ainsi que la création des users (et de leurs groupes), l'attribution de leurs droits sudo et l'établissement de leurs clés ssh.
