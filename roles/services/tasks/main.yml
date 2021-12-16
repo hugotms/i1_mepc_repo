@@ -24,9 +24,9 @@
   tags: package
 
 - name: make binaries
-  shell: "make -C /tmp/{{ item.name }} -f /tmp/{{ item.name }}/Makefile"
-  args:
-    executable: /bin/bash
+  make:
+    chdir: "/tmp/{{ item.name }}"
+    file: "/tmp/{{ item.name }}/Makefile"
   loop: "{{ list_services.make_from_git }}"
   loop_control:
     label: "{{ item.name }}"
