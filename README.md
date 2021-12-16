@@ -28,6 +28,8 @@ pip3 install ansible
 
 # packer-course-bootstrap
 
+Avant d'exécuter le script, s'assurer que l'iso de Rocky Linux 8 est copiée dans le répertoire racine du projet. Il est en effet impossible de l'uploader sur GitHub.
+
 ## Kickstart 
 
 #### Générer le mot de passe de root
